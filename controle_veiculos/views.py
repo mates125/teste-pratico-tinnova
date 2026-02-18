@@ -1,8 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from controle_veiculos.models import Veiculo
 from django.shortcuts import get_object_or_404
+from django.db import IntegrityError
+from rest_framework import status
 
 class VeiculoListView(APIView):
     permission_classes = [IsAuthenticated]
@@ -37,6 +39,24 @@ class VeiculoListView(APIView):
         ]
 
         return Response(data)
+
+    def post(self, request):
+        if not request.user.is_staff:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            Veiculo.objects.create(
+                placa=request.data["placa"],
+                marca=request.data["marca"],
+                modelo=request.data["modelo"],
+                ano=request.data["ano"],
+                cor=request.data["cor"],
+                preco_usd=request.data["preco_usd"]
+            )
+        except IntegrityError:
+            return Response(status=status.HTTP_409_CONFLICT)
+
+        return Response(status=status.HTTP_201_CREATED)
 
 class VeiculoDetailView(APIView):
     permission_classes = [IsAuthenticated]
