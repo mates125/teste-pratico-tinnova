@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from controle_veiculos.models import Veiculo
+from django.shortcuts import get_object_or_404
 
 class VeiculoListView(APIView):
     permission_classes = [IsAuthenticated]
@@ -37,3 +38,17 @@ class VeiculoListView(APIView):
 
         return Response(data)
 
+class VeiculoDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        veiculo = get_object_or_404(Veiculo.objects.ativos(), pk=pk)
+
+        return Response({
+            "placa": veiculo.placa,
+            "marca": veiculo.marca,
+            "modelo": veiculo.modelo,
+            "ano": veiculo.ano,
+            "cor": veiculo.cor,
+            "preco_usd": float(veiculo.preco_usd),
+        })
