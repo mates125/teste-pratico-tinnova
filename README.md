@@ -99,10 +99,11 @@ docker compose up -d
 python manage.py runserver
 ```
 
-A aplicação ficará disponível em:
+A aplicação (Front End) e a API ficarão disponíveis em:
 
 http://127.0.0.1:8000
 
+Para utilizar o Front End basta fazer login com o usuário Admin ou Padrão criados anteriormente
 
 ## Autenticação (JWT)
 A autenticação da API é feita via JWT.
