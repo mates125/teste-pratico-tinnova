@@ -72,3 +72,27 @@ class VeiculoDetailView(APIView):
             "cor": veiculo.cor,
             "preco_usd": float(veiculo.preco_usd),
         })
+
+    def put(self, request, pk):
+        if not request.user.is_staff:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        veiculo = get_object_or_404(Veiculo, pk=pk)
+
+        for campo in ["placa", "marca", "modelo", "ano", "cor", "preco_usd"]:
+            setattr(veiculo, campo, request.data.get(campo))
+
+        veiculo.save()
+        return Response(status=status.HTTP_200_OK)
+
+    def patch(self, request, pk):
+        if not request.user.is_staff:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        veiculo = get_object_or_404(Veiculo, pk=pk)
+
+        for campo, valor in request.data.items():
+            setattr(veiculo, campo, valor)
+
+        veiculo.save()
+        return Response(status=status.HTTP_200_OK)
