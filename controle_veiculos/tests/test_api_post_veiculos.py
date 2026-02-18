@@ -1,12 +1,11 @@
 import pytest
 from django.urls import reverse
-from django.contrib.auth.models import User
 from controle_veiculos.models import Veiculo
+from conftest import user_token, admin_token, api_client
 
 @pytest.mark.django_db
-def test_post_veiculos_com_user_retorna_403(client):
-    user = User.objects.create_user(username="user", password="123")
-    client.force_login(user)
+def test_post_veiculos_com_user_retorna_403(api_client, user_token):
+    api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {user_token}")
 
     payload = {
         "placa": "DDD4444",
@@ -18,16 +17,13 @@ def test_post_veiculos_com_user_retorna_403(client):
     }
 
     url = reverse("veiculos-list")
-    response = client.post(url, payload, content_type="application/json")
+    response = api_client.post(url, payload, format="json")
 
     assert response.status_code == 403
 
 @pytest.mark.django_db
-def test_post_veiculos_com_admin_retorna_201(client):
-    admin = User.objects.create_superuser(
-        username="admin", password="123", email="admin@test.com"
-    )
-    client.force_login(admin)
+def test_post_veiculos_com_admin_retorna_201(api_client, admin_token):
+    api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {admin_token}")
 
     payload = {
         "placa": "EEE5555",
@@ -39,16 +35,13 @@ def test_post_veiculos_com_admin_retorna_201(client):
     }
 
     url = reverse("veiculos-list")
-    response = client.post(url, payload, content_type="application/json")
+    response = api_client.post(url, payload, format="json")
 
     assert response.status_code == 201
 
 @pytest.mark.django_db
-def test_post_veiculos_placa_duplicada_retorna_409(client):
-    admin = User.objects.create_superuser(
-        username="admin", password="123", email="admin@test.com"
-    )
-    client.force_login(admin)
+def test_post_veiculos_placa_duplicada_retorna_409(api_client, admin_token):
+    api_client.credentials(HTTP_AUTHORIZATION=f"Bearer {admin_token}")
 
     Veiculo.objects.create(
         placa="FFF6666",
@@ -69,6 +62,6 @@ def test_post_veiculos_placa_duplicada_retorna_409(client):
     }
 
     url = reverse("veiculos-list")
-    response = client.post(url, payload, content_type="application/json")
+    response = api_client.post(url, payload, format="json")
 
     assert response.status_code == 409

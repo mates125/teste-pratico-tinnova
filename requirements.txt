@@ -1,7 +1,8 @@
-Django>=5.0
+djangorestframework-simplejwt
 djangorestframework
-gunicorn
 psycopg2-binary
+django-redis
+Django>=5.0
+gunicorn
 requests
 redis
-django-redis
