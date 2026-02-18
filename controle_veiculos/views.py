@@ -1,10 +1,11 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from controle_veiculos.models import Veiculo
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
 from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
-from rest_framework import status
+from django.db.models import Count
+from controle_veiculos.models import Veiculo
 
 class VeiculoListView(APIView):
     permission_classes = [IsAuthenticated]
@@ -106,3 +107,16 @@ class VeiculoDetailView(APIView):
         veiculo.save()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class VeiculosRelatorioPorMarcaView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        qs = (
+            Veiculo.objects.ativos()
+            .values("marca")
+            .annotate(total=Count("id"))
+        )
+
+        data = {item["marca"]: item["total"] for item in qs}
+        return Response(data)
