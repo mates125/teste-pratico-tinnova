@@ -17,7 +17,7 @@
 
 <table border="1">
 <tr>
-  <th>Placa</th><th>Marca</th><th>Modelo</th><th>Ano</th><th>Ações</th>
+  <th>Placa</th><th>Marca</th><th>Modelo</th><th>Ano</th><th>Cor</th><th>Preço USD</th><th>Ações</th>
 </tr>
 {% for v in veiculos %}
 <tr>
@@ -25,6 +25,8 @@
   <td>{{ v.marca }}</td>
   <td>{{ v.modelo }}</td>
   <td>{{ v.ano }}</td>
+  <td>{{ v.cor }}</td>
+  <td>{{ v.preco_usd }}</td>
   <td>
     <a href="{% url 'veiculo_detalhe' v.id %}">Detalhes</a>
     <a href="{% url 'veiculo_editar' v.id %}">Editar</a>
