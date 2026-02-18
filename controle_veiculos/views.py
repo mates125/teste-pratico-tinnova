@@ -96,3 +96,13 @@ class VeiculoDetailView(APIView):
 
         veiculo.save()
         return Response(status=status.HTTP_200_OK)
+    
+    def delete(self, request, pk):
+        if not request.user.is_staff:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        veiculo = get_object_or_404(Veiculo, pk=pk)
+        veiculo.ativo = False
+        veiculo.save()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
