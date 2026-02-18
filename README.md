@@ -35,12 +35,12 @@ Funcionalidades implementadas:
 
 ## Estrutura do projeto
 
-├── controle_veiculos/ # API (regras de negócio)
-├── frontend/ # Frontend Django
-├── core/ # Configurações do projeto
-├── manage.py
-├── requirements.txt
-├── requirements-dev.txt
+├── controle_veiculos/ # API (regras de negócio)<br>
+├── frontend/ # Frontend Django<br>
+├── core/ # Configurações do projeto<br>
+├── manage.py<br>
+├── requirements.txt<br>
+├── requirements-dev.txt<br>
 └── README.md
 
 ---
