@@ -48,3 +48,33 @@ def test_get_veiculos_retorna_apenas_ativos(client):
     response = client.get(url)
 
     assert len(response.json()) == 1
+
+@pytest.mark.django_db
+def test_get_veiculos_filtra_por_marca_e_ano(client):
+    user = User.objects.create_user(username="user", password="123")
+    client.force_login(user)
+
+    Veiculo.objects.create(
+        placa="AAA1111",
+        marca="Ford",
+        modelo="Ka",
+        ano=2020,
+        cor="Preto",
+        preco_usd=10000,
+        ativo=True
+    )
+
+    Veiculo.objects.create(
+        placa="BBB2222",
+        marca="Ford",
+        modelo="Fiesta",
+        ano=2019,
+        cor="Branco",
+        preco_usd=9000,
+        ativo=True
+    )
+
+    url = reverse("veiculos-list") + "?marca=Ford&ano=2020"
+    response = client.get(url)
+
+    assert len(response.json()) == 1

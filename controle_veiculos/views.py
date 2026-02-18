@@ -7,7 +7,22 @@ class VeiculoListView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        veiculos = Veiculo.objects.ativos()
+        filtros = {
+            "marca": request.query_params.get("marca"),
+            "ano": request.query_params.get("ano"),
+            "cor": request.query_params.get("cor"),
+            "min_preco": request.query_params.get("minPreco"),
+            "max_preco": request.query_params.get("maxPreco"),
+        }
+
+        veiculos = Veiculo.objects.filtrar(
+            marca=filtros["marca"],
+            ano=filtros["ano"],
+            cor=filtros["cor"],
+            min_preco=filtros["min_preco"],
+            max_preco=filtros["max_preco"],
+        )
+
         data = [
             {
                 "placa": v.placa,
@@ -19,4 +34,6 @@ class VeiculoListView(APIView):
             }
             for v in veiculos
         ]
+
         return Response(data)
+
