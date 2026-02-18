@@ -1,0 +1,35 @@
+<h1>Veículos</h1>
+
+<a href="{% url 'logout' %}">Logout</a>
+
+<form method="get">
+  <input name="marca" placeholder="Marca">
+  <input name="modelo" placeholder="Modelo">
+  <input name="placa" placeholder="Placa">
+  <input name="ano" placeholder="Ano">
+  <input name="cor" placeholder="Cor">
+  <input name="minPreco" placeholder="Preço mínimo">
+  <input name="maxPreco" placeholder="Preço máximo">
+  <button type="submit">Filtrar</button>
+</form>
+
+<a href="{% url 'veiculo_novo' %}">Novo Veículo</a>
+
+<table border="1">
+<tr>
+  <th>Placa</th><th>Marca</th><th>Modelo</th><th>Ano</th><th>Ações</th>
+</tr>
+{% for v in veiculos %}
+<tr>
+  <td>{{ v.placa }}</td>
+  <td>{{ v.marca }}</td>
+  <td>{{ v.modelo }}</td>
+  <td>{{ v.ano }}</td>
+  <td>
+    <a href="{% url 'veiculo_detalhe' v.id %}">Detalhes</a>
+    <a href="{% url 'veiculo_editar' v.id %}">Editar</a>
+    <a href="{% url 'veiculo_excluir' v.id %}">Excluir</a>
+  </td>
+</tr>
+{% endfor %}
+</table>

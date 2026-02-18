@@ -12,7 +12,10 @@ class VeiculoListView(APIView):
 
     def get(self, request):
         filtros = {
+            "id": request.query_params.get("id"),
+            "placa": request.query_params.get("placa"),
             "marca": request.query_params.get("marca"),
+            "modelo": request.query_params.get("modelo"),
             "ano": request.query_params.get("ano"),
             "cor": request.query_params.get("cor"),
             "min_preco": request.query_params.get("minPreco"),
@@ -20,7 +23,10 @@ class VeiculoListView(APIView):
         }
 
         veiculos = Veiculo.objects.filtrar(
+            id=filtros["id"],
+            placa=filtros["placa"],
             marca=filtros["marca"],
+            modelo=filtros["modelo"],
             ano=filtros["ano"],
             cor=filtros["cor"],
             min_preco=filtros["min_preco"],
@@ -29,6 +35,7 @@ class VeiculoListView(APIView):
 
         data = [
             {
+                "id": v.id,
                 "placa": v.placa,
                 "marca": v.marca,
                 "modelo": v.modelo,

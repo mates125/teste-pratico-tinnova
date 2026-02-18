@@ -19,7 +19,8 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('controle_veiculos.urls')),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("admin/", admin.site.urls),
+    path("api/token/", TokenObtainPairView.as_view()),
+    path("api/", include("controle_veiculos.urls")),
+    path("", include("frontend.urls")),
 ]

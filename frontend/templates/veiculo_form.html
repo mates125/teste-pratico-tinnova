@@ -1,0 +1,14 @@
+<h1>Veículo</h1>
+
+<form method="post">
+  {% csrf_token %}
+  <input name="placa" placeholder="Placa" value="{{ veiculo.placa|default:'' }}">
+  <input name="marca" placeholder="Marca" value="{{ veiculo.marca|default:'' }}">
+  <input name="modelo" placeholder="Modelo" value="{{ veiculo.modelo|default:'' }}">
+  <input name="ano" placeholder="Ano" value="{{ veiculo.ano|default:'' }}">
+  <input name="cor" placeholder="Cor" value="{{ veiculo.cor|default:'' }}">
+  <input name="preco_usd" placeholder="Preço USD" value="{{ veiculo.preco_usd|default:'' }}">
+  <button type="submit">Salvar</button>
+</form>
+
+<a href="{% url 'veiculos' %}">Cancelar</a>
